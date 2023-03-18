@@ -7,7 +7,7 @@
 import os
 from tkinter import *
 from tkinter.filedialog import askdirectory
-# os.rename("test.txt","Tested.txt")
+
 srcPath = ""
 dstPath = ""
 root = Tk()
@@ -15,7 +15,6 @@ root.title("Renamer")
 
 def grabPath(Label, path, isSource): #(Label, path)
     path = askdirectory(title="Select Folder") #shows dialog box and returns the path
-    
     if path == "":
         Label.config(text="Please enter a valid Path")
         runBtn.config(state="disabled")
@@ -33,8 +32,10 @@ def grabPath(Label, path, isSource): #(Label, path)
         Label.config(text=path)
         print("Files and directories in ", path, ":")
         #print(os.listdir(path))
-def changeNames(srcPath, dstPath):
-    files = []
+def warningMessage(srcPath, dstPath):
+    files = os.listdir(srcPath)
+    extention = files[0][-4:] #last 4 characters
+    exampleTxt = " 1 Example of " + str(len(files)) + " files.\n   Before: " + files[0] + "\n   After: " + (files[0][0:-4] + files[0][0] + extention) 
     if ":" in srcPath and ":" in dstPath:
         print("good to go")
     else:
@@ -43,17 +44,24 @@ def changeNames(srcPath, dstPath):
         return
     # if path is "~~~ Path or Please enter a valid path" then don't run.
     files = os.listdir(srcPath)
-    print("# of files to be renamed:", str(len(files)))
-    print("changing names of:", os.listdir(srcPath), "and moving them to ", dstPath)
+    print("changing names of:", files, "and moving them to ", dstPath)
+    global warningWin
     warningWin = Toplevel(root)
     warningWin.grab_set()
     warningWin.title("Warning")
-    warningLabel = Label(warningWin, text="are you sure you want to change the files in the listed folder?")
-    warningBtnRight = Button(warningWin, text="Yes")
+    warningLabel = Label(warningWin, text="Change files in: " + srcPath + "\n to " + dstPath)
+    warningLabelEx = Label(warningWin, text=exampleTxt)
+    warningBtnRight = Button(warningWin, text="Yes", command=changeNames)
     warningBtnLeft = Button(warningWin, text="No", command=warningWin.destroy)
     warningLabel.pack()
+    warningLabelEx.pack()
     warningBtnLeft.pack(side="left")
     warningBtnRight.pack(side="right")
+def changeNames():
+    for item in os.listdir(srcPath):
+        # os.rename(srcPath + "/" + item, dstPath + "/" + item[0:-4] + item[0] + item[-4:])
+        print(srcPath + "/" + item + " to: " + dstPath + "/" + item[0:-4] + item[0] + item[-4:])
+    warningWin.destroy()
 
 topLabel = Label(text="Hello! Please choose a path for files to be renamed.")
 srcLabel = Label(text="Source Path")
@@ -61,7 +69,7 @@ srcBtn = Button(text="click to choose source directory.", command=lambda : grabP
 dstLabel = Label(text="Destination Path")
 dstBtn = Button(text="click to choose destination directory.", command=lambda : grabPath(dstLabel, dstPath, False))
 runLabel = Label(text="Would you like to run the name changing?")
-runBtn = Button(text="Change Names", command=lambda : changeNames(srcPath, dstPath), state="disabled")
+runBtn = Button(text="Change Names", command=lambda : warningMessage(srcPath, dstPath), state="disabled")
 topLabel.pack()
 srcLabel.pack()
 srcBtn.pack()

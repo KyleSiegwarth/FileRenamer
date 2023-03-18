@@ -3,5 +3,5 @@ items =['0_Hydrangea_1in.pes', '1_Hydrangea_1in.pes', '2_Hydrangea_1in.pes', '3_
 extention = items[0][-4:] #last 4 characters
 print(extention)
 for item in items:
-    fullThing = item[1:-4] + item[0] + extention
+    fullThing = item[0:-4] + item[0] + extention
     print(" old:", item, " new:", fullThing)
