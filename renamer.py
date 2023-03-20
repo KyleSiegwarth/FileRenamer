@@ -37,14 +37,13 @@ def warningMessage(srcPath, dstPath):
     extention = files[0][-4:] #last 4 characters
     exampleTxt = " 1 Example of " + str(len(files)) + " files.\n   Before: " + files[0] + "\n   After: " + (files[0][0:-4] + files[0][0] + extention) 
     if ":" in srcPath and ":" in dstPath:
-        print("good to go")
+        print("2 valid paths")
     else:
-        print("not valid entries") 
+        print("not valid path entries") 
         runBtn.config(state="disabled")
         return
     # if path is "~~~ Path or Please enter a valid path" then don't run.
     files = os.listdir(srcPath)
-    print("changing names of:", files, "and moving them to ", dstPath)
     global warningWin
     warningWin = Toplevel(root)
     warningWin.grab_set()
@@ -59,7 +58,7 @@ def warningMessage(srcPath, dstPath):
     warningBtnRight.pack(side="right")
 def changeNames():
     for item in os.listdir(srcPath):
-        # os.rename(srcPath + "/" + item, dstPath + "/" + item[0:-4] + item[0] + item[-4:])
+        os.rename(srcPath + "/" + item, dstPath + "/" + item[0:-4] + item[0] + item[-4:])
         print(srcPath + "/" + item + " to: " + dstPath + "/" + item[0:-4] + item[0] + item[-4:])
     warningWin.destroy()
 
