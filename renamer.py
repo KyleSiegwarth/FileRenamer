@@ -4,6 +4,7 @@
 # request the user to add the basic filename found in all files so that you can change only the portion that matters to the end.
 # provide the user with a count of the files in directory and how the naming convention is.
 # entry widget to allow changing of default naming convention.
+# build command: pyinstaller.exe --icon=FileRenamer.ico .\renamer.py  -n Renamer --onefile --windowed --distpath ..\RenamerOut\  --workpath ..\RenamerOut\
 import os
 from tkinter import *
 from tkinter.filedialog import askdirectory
@@ -12,6 +13,9 @@ srcPath = ""
 dstPath = ""
 root = Tk()
 root.title("Renamer")
+#root.iconbitmap("FileRenamer.ico")
+photo = PhotoImage(file="FileRenamerTest2.png") # should be roughly a 30x30 image
+root.wm_iconphoto(False, photo) # if true it is applied to all future toplevels aswell.
 
 def grabPath(Label, path, isSource): #(Label, path)
     path = askdirectory(title="Select Folder") #shows dialog box and returns the path
